@@ -84,6 +84,7 @@ export default defineComponent({
     .title {
       font-size: 26px;
       font-weight: 700;
+      color: rgb(0, 0, 0);
     }
   }
   .form {
