@@ -27,12 +27,12 @@
             </div>
           </a-tab-pane>
           <a-tab-pane key="2" tab="注册">
-            <a-input size="large" placeholder="账户" class="item">
+            <a-input size="large" placeholder="账户" class="item" v-model:value="regForm.account">
               <template #prefix>
                 <UserOutlined />
               </template>
             </a-input>
-            <a-input size="large" placeholder="密码" class="item">
+            <a-input size="large" placeholder="密码" class="item" v-model:value="regForm.password">
               <template #prefix>
                 <lock-outlined />
               </template>
@@ -43,7 +43,7 @@
               </template>
             </a-input>
             <div class="item">
-              <a-button size="large" type="primary">注册</a-button>
+              <a-button size="large" type="primary" @click="register">注册</a-button>
             </div>
           </a-tab-pane>
         </a-tabs>
@@ -53,9 +53,10 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons-vue';
+import { auth } from '../../service';
 
 export default defineComponent({
   components: {
@@ -64,7 +65,19 @@ export default defineComponent({
     MailOutlined,
   },
   setup() {
-    return {};
+    const regForm = reactive({
+      account: '',
+      password: '',
+    });
+
+    const register = () => {
+      // console.log(regForm);
+      auth.register(regForm.account, regForm.password);
+    };
+    return {
+      regForm,
+      register,
+    };
   },
 });
 </script>
