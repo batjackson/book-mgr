@@ -9,12 +9,17 @@
       <div class="form">
         <a-tabs v-model:activeKey="activeKey">
           <a-tab-pane key="1" tab="登录">
-            <a-input size="large" placeholder="账户" class="item">
+            <a-input size="large" placeholder="账户" class="item" v-model:value="loginForm.account">
               <template #prefix>
                 <UserOutlined />
               </template>
             </a-input>
-            <a-input size="large" placeholder="密码" class="item">
+            <a-input
+              size="large"
+              placeholder="密码"
+              class="item"
+              v-model:value="loginForm.password"
+            >
               <template #prefix>
                 <lock-outlined />
               </template>
@@ -23,7 +28,7 @@
               <a href="">忘记密码</a>
             </div>
             <div class="item">
-              <a-button size="large" type="primary">登录</a-button>
+              <a-button size="large" type="primary" @click="login">登录</a-button>
             </div>
           </a-tab-pane>
           <a-tab-pane key="2" tab="注册">
@@ -37,7 +42,12 @@
                 <lock-outlined />
               </template>
             </a-input>
-            <a-input size="large" placeholder="邀请码" class="item">
+            <a-input
+              size="large"
+              placeholder="邀请码"
+              class="item"
+              v-model:value="regForm.inviteCode"
+            >
               <template #prefix>
                 <mail-outlined />
               </template>
@@ -56,6 +66,8 @@
 import { defineComponent, reactive } from 'vue';
 
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons-vue';
+import { message } from 'ant-design-vue';
+import { result } from '../../helpers/utils';
 import { auth } from '../../service';
 
 export default defineComponent({
@@ -63,20 +75,64 @@ export default defineComponent({
     UserOutlined,
     LockOutlined,
     MailOutlined,
+    message,
   },
   setup() {
+    // 注册表单数据
     const regForm = reactive({
       account: '',
       password: '',
+      inviteCode: '',
     });
+    // 注册逻辑
+    const register = async () => {
+      console.log(regForm);
+      if (regForm.account === '') {
+        message.info('账户不能为空');
+        return;
+      }
+      if (regForm.password === '') {
+        message.info('密码不能为空');
+        return;
+      }
+      if (regForm.inviteCode === '') {
+        message.info('请输入邀请码');
+        return;
+      }
 
-    const register = () => {
-      // console.log(regForm);
-      auth.register(regForm.account, regForm.password);
+      const res = await auth.register(regForm.account, regForm.password, regForm.inviteCode);
+      result(res).success((data) => {
+        message.success(data.msg);
+      });
+    };
+
+    // 登录表单数据
+    const loginForm = reactive({
+      account: '',
+      password: '',
+    });
+    // 登录逻辑
+    const login = async () => {
+      // if (loginForm.account === '') {
+      //   message.info('账户不能为空');
+      // }
+      // if (loginForm.password === '') {
+      //   message.info('密码不能为空');
+      // }
+      const res = await auth.login(loginForm.account, loginForm.password);
+
+      result(res).success((data) => {
+        message.success(data.msg);
+      });
     };
     return {
+      // 注册相关数据
       regForm,
       register,
+
+      // 登录相关数据
+      loginForm,
+      login,
     };
   },
 });
