@@ -6,6 +6,19 @@ const routes = [
     name: 'Auth',
     component: () => import('../views/Auth/AuthView.vue'),
   },
+  {
+    path: '/',
+    name: 'BasicLayout',
+    component: () => import('../layout/BasicLayout'),
+    children: [
+      {
+        path: '/books',
+        name: 'Books',
+        component: () => import('../views/Books'),
+      },
+    ],
+  },
+
   // {
   //   path: '/about',
   //   name: 'about',
