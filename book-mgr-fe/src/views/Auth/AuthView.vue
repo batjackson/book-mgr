@@ -69,6 +69,10 @@ import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue';
 import { result } from '../../helpers/utils';
 import { auth } from '../../service';
+import store from '@/store';
+import { getCharacterInfoById } from '@/helpers/character';
+import { useRouter } from 'vue-router';
+import { setToken } from '@/helpers/token';
 
 export default defineComponent({
   components: {
@@ -78,6 +82,8 @@ export default defineComponent({
     message,
   },
   setup() {
+    const router = useRouter();
+
     // 注册表单数据
     const regForm = reactive({
       account: '',
@@ -121,8 +127,14 @@ export default defineComponent({
       // }
       const res = await auth.login(loginForm.account, loginForm.password);
 
-      result(res).success((data) => {
-        message.success(data.msg);
+      result(res).success(({ msg, data: { user, token } }) => {
+        message.success(msg);
+        store.commit('setUserInfo', user);
+        store.commit('setUserCharacter', getCharacterInfoById(user.character));
+        // 存储token到浏览器
+        setToken(token);
+        // 跳转页面
+        router.replace('/books');
       });
     };
     return {

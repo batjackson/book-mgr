@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-
+import { character } from '@/service';
+import store from '@/store';
 const routes = [
   {
     path: '/auth',
@@ -14,24 +15,34 @@ const routes = [
       {
         path: '/books',
         name: 'Books',
-        component: () => import('../views/Books'),
+        component: () => import('../views/Books/index.vue'),
+      },
+      {
+        path: '/books/:id',
+        name: 'BookDetail',
+        component: () => import('../views/Books/BookDetail/index.vue'),
+      },
+      {
+        path: '/user',
+        name: 'User',
+        component: () => import('../views/Users/index.vue'),
       },
     ],
   },
-
-  // {
-  //   path: '/about',
-  //   name: 'about',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
-  // },
 ];
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+  if (!store.state.characterInfo.length) {
+    store.dispatch('getCharacterInfo');
+  }
+  store.dispatch('getUserInfo');
+  // console.log(store.state);
+  next();
 });
 
 export default router;

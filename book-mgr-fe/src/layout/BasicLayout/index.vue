@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="app-content">
-      <div class="left"><app-nav></app-nav></div>
+      <div class="left"><Nav /></div>
       <div class="right"><router-view></router-view></div>
     </div>
   </div>
@@ -20,10 +20,10 @@
 
 <script>
 import { defineComponent } from 'vue';
-import AppNav from './AppNav';
+import Nav from './Nav';
 export default defineComponent({
   components: {
-    AppNav,
+    Nav,
   },
   setup() {},
 });
@@ -76,7 +76,7 @@ export default defineComponent({
     display: flex;
     .left {
       width: 256px;
-      background-color: #efefef;
+      background-color: #fafafa;
       position: fixed;
       top: 64px;
       bottom: 0;

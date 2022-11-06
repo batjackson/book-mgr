@@ -3,12 +3,16 @@ const koaBody = require('koa-body')
 // const Router = require('@koa/router')
 const { connect } = require('./db')
 const registerRoutes = require('./routers')
+const { middleware: koaJwtMiddleWare, catchTokenError } = require('./helpers/token')
 const cors = require('@koa/cors')
 const app = new Koa()
 
 connect().then(() => {
   app.use(cors())
   app.use(koaBody())
+
+  app.use(catchTokenError)
+  koaJwtMiddleWare(app)
   registerRoutes(app)
 
   app.use

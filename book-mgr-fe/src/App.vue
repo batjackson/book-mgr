@@ -4,7 +4,10 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.body {
+  background: #fafafa !important;
+}
 .app {
   position: fixed;
   width: 100%;
