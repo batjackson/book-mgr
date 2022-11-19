@@ -33,7 +33,6 @@ export default createStore({
       // console.log(123456);
       result(res).success(({ data }) => {
         store.commit('setUserInfo', data);
-
         store.commit('setUserCharacter', getCharacterInfoById(data.character));
       });
     },
