@@ -13,6 +13,7 @@ export default createStore({
   mutations: {
     setCharacterInfo(state, characterInfo) {
       state.characterInfo = characterInfo;
+      
     },
     setUserInfo(state, userInfo) {
       state.userInfo = userInfo;

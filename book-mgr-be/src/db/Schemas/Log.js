@@ -8,11 +8,11 @@ const LogSchema = new mongoose.Schema({
   request: {
     methods: String,
     url: String,
-    responseBody: String,
     status:Number
   },
   startTime: Number,
-  endTime:Number,
+  endTime: Number,
+  show:Boolean,
   meta: getMeta(),
 })
 LogSchema.pre('save', preSave)

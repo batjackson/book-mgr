@@ -17,7 +17,11 @@ router.get('/list', async (ctx) => {
   page = Number(page)
   size = Number(size)
 
-  const list = await Log.find().skip((page - 1) * size).limit(size).exec()
+  const list = await Log.find({
+    show:true
+  }).sort({
+    _id:-1
+  }).skip((page - 1) * size).limit(size).exec()
   const total = await Log.countDocuments().exec()
 
 
@@ -33,5 +37,28 @@ router.get('/list', async (ctx) => {
   }
 })
 
+router.post('/delete', async (ctx) => {
+  const { id } = ctx.request.body;
+
+  const one = await Log.findOne({
+    _id:id
+  }).exec()
+  if (!one) {
+    ctx.body = {
+      data: {},
+      msg: '删除成功',
+      code:0,
+    }
+    return
+  }
+  one.show = false
+  await one.save()
+
+
+  ctx.body = {
+    code: 1,
+    msg: '删除成功',
+  }
+})
 
 module.exports = router
