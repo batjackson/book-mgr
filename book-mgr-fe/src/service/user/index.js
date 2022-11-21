@@ -38,3 +38,9 @@ export const editCharacter = (characterId, userId) => {
 export const info = () => {
   return axios.get(`http://localhost:3001/user/info`);
 };
+
+export const addMany = (key) => {
+  return axios.post(`http://localhost:3001/user/addmany`, {
+    key
+  });
+};

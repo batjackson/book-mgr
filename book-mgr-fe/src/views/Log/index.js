@@ -16,19 +16,21 @@ const columns = [
     title: '记录时间',
     dataIndex: 'createdAt',
   },
-  {
-    title: '操作',
-    dataIndex: 'actions',
-  },
 ];
 
 export default defineComponent({
-  setup() {
+  props: { simple: Boolean },
+  setup(props) {
     const curPage = ref(1);
     const total = ref(0);
     const list = ref([]);
     const loading = ref(true);
-
+    if (!props.simple) {
+      columns.push({
+        title: '操作',
+        dataIndex: 'actions',
+      });
+    }
     const getList = async () => {
       loading.value = true;
       const res = await log.list(curPage.value, 10);
@@ -65,6 +67,7 @@ export default defineComponent({
       loading,
       formatTimeStamp,
       remove,
+      simple: props.simple,
     };
   },
 });

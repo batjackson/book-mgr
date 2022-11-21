@@ -3,7 +3,8 @@ import { book } from '@/service';
 import { result, clone } from '@/helpers/utils';
 import { message } from 'ant-design-vue';
 import moment from 'moment';
-import { progressStatuses } from 'ant-design-vue/lib/progress/props';
+import store from '@/store';
+
 export default defineComponent({
   props: {
     show: Boolean,
@@ -51,6 +52,7 @@ export default defineComponent({
       submit,
       props,
       close,
+      store:store.state
     };
   },
 });

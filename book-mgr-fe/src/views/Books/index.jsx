@@ -2,9 +2,10 @@ import SpaceBetween from '../../components/SpaceBetween';
 import { defineComponent, ref, onMounted, createVNode } from 'vue';
 import AddOne from './AddOne/index.vue';
 import Update from './Update/index.vue';
-import { book } from '@/service';
+import { book, BookClassify } from '@/service';
 import { message, Modal } from 'ant-design-vue';
 import { result, formatTimeStamp } from '@/helpers/utils';
+import { getClassifyById } from '@/helpers/book-classify';
 import { useRouter } from 'vue-router';
 import { Item } from 'ant-design-vue/lib/menu';
 export default defineComponent({
@@ -13,7 +14,10 @@ export default defineComponent({
     SpaceBetween,
     Update,
   },
-  setup() {
+  props: {
+    simple: Boolean,
+  },
+  setup(props) {
     const router = useRouter();
     const columns = [
       {
@@ -43,11 +47,15 @@ export default defineComponent({
         title: '分类',
         dataIndex: 'classify',
       },
-      {
+
+    ];
+
+    if (!props.simple) {
+      columns.push({
         title: '操作',
         dataIndex: 'actions',
-      },
-    ];
+      });
+    }
     const show = ref(false);
     const showUpdateModal = ref(false);
     // const setShow = (bool) => {
@@ -59,6 +67,7 @@ export default defineComponent({
     const keyword = ref('');
     const isSearch = ref(false);
     const curEditBook = ref({});
+
     // 获取书籍列表
     const getList = async () => {
       const res = await book.list({
@@ -101,6 +110,7 @@ export default defineComponent({
 
       result(res).success(({ msg }) => {
         message.success(msg);
+        getList()
       });
       // const idx = list.value.findIndex((item) => {
       //   return item._id === _id;
@@ -163,6 +173,17 @@ export default defineComponent({
     const toDetail = (record) => {
       router.push(`/books/${record._id}`);
     };
+    const onUploadChange = ({ file }) => {
+      if (file.response) {
+        result(file.response).success(async (key) => {
+          const res = await book.addMany(key);
+          result(res).success(({ data:{addCount} }) => {
+            message.success(`成功添加 ${addCount} 本书`)
+            getList();
+          })
+        });
+      }
+    }
     return {
       columns,
       show,
@@ -182,6 +203,10 @@ export default defineComponent({
       curEditBook,
       updateCurBook,
       toDetail,
+      getList,
+      getClassifyById,
+      simple: props.simple,
+      onUploadChange
       // setShow,
     };
   },

@@ -101,6 +101,17 @@ export default defineComponent({
         editForm.current.character = editForm.character;
       });
     };
+    const onUploadChange = ({ file }) => {
+      if (file.response) {
+        result(file.response).success(async (key) => {
+          const res = await user.addMany(key);
+          result(res).success(({ msg }) => {
+            message.success(msg);
+            getUser();
+          });
+        });
+      }
+    };
     return {
       list,
       total,
@@ -122,6 +133,7 @@ export default defineComponent({
       characterInfo: store.state.characterInfo,
       onEdit,
       updateCharacter,
+      onUploadChange,
     };
   },
 });

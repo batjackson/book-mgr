@@ -14,8 +14,12 @@
         <a-form-item label="出版日期">
           <a-date-picker v-model:value="addForm.publishDate"></a-date-picker>
         </a-form-item>
-        <a-form-item label="分类">
-          <a-input v-model:value="addForm.classify"></a-input>
+                <a-form-item label="分类">
+          <a-select v-model:value="addForm.classify" style="width:120px">
+            <a-select-option v-for="item in store.bookClassify" :key="item._id" :value="item._id">
+              {{item.title}}
+            </a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item label="库存">
           <a-input v-model:value="addForm.count"></a-input>

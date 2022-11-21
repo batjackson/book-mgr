@@ -13,7 +13,13 @@
           ></a-input-search>
           <a href="javascript:;" @click="backAll" v-if="isSearch">返回</a>
         </div>
-        <a-button @click="showAddModal = true">添加用户</a-button>
+        <div>
+          <a-button @click="showAddModal = true">添加用户</a-button>
+          <span>&nbsp;</span>
+          <a-upload action="http://localhost:3001/upload/file" @change="onUploadChange">
+            <a-button  type="primary">上传 Excel 添加</a-button>
+          </a-upload>
+        </div>
       </space-between>
       <a-divider></a-divider>
       <div>

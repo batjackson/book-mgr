@@ -29,3 +29,9 @@ export const update = (data = {}) => {
 export const detail = (id) => {
   return axios.get(`http://localhost:3001/book/detail/${id}`);
 };
+
+export const addMany = (key) => {
+  return axios.post(`http://localhost:3001/book/addmany`, {
+    key,
+  });
+};

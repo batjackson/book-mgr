@@ -13,24 +13,49 @@ const routes = [
     component: () => import('../layout/BasicLayout'),
     children: [
       {
-        path: '/books',
+        path: 'books',
         name: 'Books',
         component: () => import('../views/Books/index.vue'),
       },
       {
-        path: '/books/:id',
+        path: 'books/:id',
         name: 'BookDetail',
         component: () => import('../views/Books/BookDetail/index.vue'),
       },
       {
-        path: '/user',
+        path: 'user',
         name: 'User',
         component: () => import('../views/Users/index.vue'),
       },
       {
-        path: '/log',
+        path: 'log',
         name: 'Log',
         component: () => import('../views/Log/index.vue'),
+      },
+      {
+        path: 'reset/password',
+        name: 'ResetPassword',
+        component: () => import('../views/ResetPassword/index.vue'),
+      },
+      {
+        path: 'invite-code',
+        name: 'InviteCode',
+        component: () => import('../views/InviteCode/index.vue'),
+      },
+      {
+        path: 'book-classify',
+        name: 'BookClassify',
+        component: () => import('../views/BookClassify/index.vue'),
+      },
+      {
+        path: 'profile',
+        name: 'Profile',
+        component: () => import('../views/Profile/index.vue'),
+      },
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('../views/Dashboard/index.vue'),
       },
     ],
   },
@@ -46,12 +71,15 @@ router.beforeEach(async (to, from, next) => {
   if (!store.state.characterInfo.length) {
    await store.dispatch('getCharacterInfo');
   }
-
+  const reqArr = []
   if (!store.state.userInfo.account) {
-   await store.dispatch('getUserInfo');
+   reqArr.push(store.dispatch('getUserInfo'));
   }
+  if (!store.state.bookClassify.length) {
+  reqArr.push(store.dispatch('getBookClassify'));
 
- 
+  }
+  await Promise.all(reqArr)
   // console.log(store.state);
   next();
 });
