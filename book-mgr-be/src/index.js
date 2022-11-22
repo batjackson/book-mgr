@@ -3,11 +3,14 @@ const koaBody = require('koa-body')
 // const Router = require('@koa/router')
 const { connect } = require('./db')
 const registerRoutes = require('./routers')
+const koaStatic = require('koa-static')
 const { middleware: koaJwtMiddleWare, catchTokenError,checkUser } = require('./helpers/token')
 const { logMiddleware } = require('./helpers/log')
 const cors = require('@koa/cors')
+const path = require('path')
+const config = require('./project.config')
 const app = new Koa()
-
+app.use(koaStatic(path.resolve(__dirname,'../public')))
 connect().then(() => {
   app.use(cors())
   app.use(koaBody({
@@ -24,7 +27,7 @@ connect().then(() => {
 
   registerRoutes(app)
 
-  app.listen(3001, () => {
+  app.listen(config.SERVER_POST, () => {
     console.log(`启动成功`)
   })
 })

@@ -7,7 +7,7 @@
         <div class="title">图书管理系统</div>
       </div>
       <div class="right-title">
-        <div class="hello-msg">你好 xxx</div>
+        <div class="hello-msg">你好, {{store.userInfo.account}}</div>
         <div class="logout" @click="logout">退出</div>
       </div>
     </div>
@@ -22,6 +22,7 @@
 import { defineComponent } from 'vue';
 import { setToken } from '@/helpers/token';
 import Nav from './Nav';
+import store from '@/store'
 export default defineComponent({
   components: {
     Nav,
@@ -33,6 +34,7 @@ export default defineComponent({
     };
     return {
       logout,
+      store:store.state
     };
   },
 });
