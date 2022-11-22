@@ -8,7 +8,7 @@
       </div>
       <div class="right-title">
         <div class="hello-msg">你好 xxx</div>
-        <div class="logout">退出</div>
+        <div class="logout" @click="logout">退出</div>
       </div>
     </div>
     <div class="app-content">
@@ -20,12 +20,21 @@
 
 <script>
 import { defineComponent } from 'vue';
+import { setToken } from '@/helpers/token';
 import Nav from './Nav';
 export default defineComponent({
   components: {
     Nav,
   },
-  setup() {},
+  setup() {
+    const logout = () => {
+      setToken('');
+      window.location.href = '/'
+    };
+    return {
+      logout,
+    };
+  },
 });
 </script>
 

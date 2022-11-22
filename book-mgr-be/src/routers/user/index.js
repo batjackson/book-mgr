@@ -5,6 +5,7 @@ const config = require('../../project.config')
 const User = mongoose.model('User')
 const Character = mongoose.model('Character')
 const { verify, getToken } = require('../../helpers/token')
+const {loadExcel,getFirstSheet} = require('../../helpers/excel')
 
 const router = new Router({
   prefix: '/user',
@@ -158,6 +159,48 @@ router.get('/info', async (ctx) => {
     code: 1,
     msg: '获取成功',
   }
+})
+
+router.post('/addmany', async (ctx) => {
+  const {
+    key = ''
+  } = ctx.request.body
+
+  const path = `${config.UPLOAD_DIR}/${key}`
+  console.log(key);
+  if (!key) {
+    ctx.body = {
+      msg: '上传失败',
+      code:0
+    }
+    return
+  }
+  const excel = loadExcel(path)
+
+  const sheet = getFirstSheet(excel)
+  // loadExcel, getFirstSheet
+  const arr = []
+  const character = await Character.find().exec()
+  const member = character.find((item) => 
+    (item.name ==='member')
+  )
+
+  sheet.forEach((record) => {
+    
+    const [account, password = config.DEFAULT_PASSWORD] = record
+    arr.push({
+      account,
+      password: password || '123123',
+      character:member._id,
+    })
+  })
+  await User.insertMany(arr)
+
+  ctx.body = {
+    code: 1,
+    msg:'添加成功'
+  }
+
 })
 
 module.exports = router

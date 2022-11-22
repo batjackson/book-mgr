@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { character } from '@/service';
+import { user } from '@/service';
 import store from '@/store';
+import { message } from 'ant-design-vue';
 const routes = [
   {
     path: '/auth',
@@ -10,6 +11,7 @@ const routes = [
   {
     path: '/',
     name: 'BasicLayout',
+    redirect:'/auth',
     component: () => import('../layout/BasicLayout'),
     children: [
       {
@@ -67,20 +69,42 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  let res = {};
+  try {
+   res= await user.info()
+  } catch (e) {
+    if (e.message.includes('code 401')) {
+      res.code = 401
+    }
+
+  }
+  const { code } = res;
+  if (code === 401) {
+    if (to.path === '/auth') {
+      next();
+      return;
+    }
+    message.error('认证失败，请重新登入')
+    next('/auth')
+    return
+  }
 
   if (!store.state.characterInfo.length) {
-   await store.dispatch('getCharacterInfo');
+    await store.dispatch('getCharacterInfo');
   }
-  const reqArr = []
+  const reqArr = [];
   if (!store.state.userInfo.account) {
-   reqArr.push(store.dispatch('getUserInfo'));
+    reqArr.push(store.dispatch('getUserInfo'));
   }
   if (!store.state.bookClassify.length) {
-  reqArr.push(store.dispatch('getBookClassify'));
-
+    reqArr.push(store.dispatch('getBookClassify'));
   }
-  await Promise.all(reqArr)
+  await Promise.all(reqArr);
   // console.log(store.state);
+  if (to.path === '/auth') {
+    next('/books')
+    return
+  }
   next();
 });
 

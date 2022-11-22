@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 
 const ForgetPassword = mongoose.model('ForgetPassword')
 const User = mongoose.model('User')
+const config = require('../../project.config')
 const router = new Router({
   prefix: '/forget-password',
 })
@@ -11,7 +12,7 @@ router.get('/list', async (ctx) => {
   let {
     page,
     size
-  } = ctx.request.body
+  } = ctx.request.query
   page = Number(page)
   size = Number(size)
 
@@ -75,8 +76,8 @@ router.post('/add', async (ctx) => {
 
 router.post('/update/status', async (ctx) => {
   const { id, status } = ctx.request.body
-  
-  const one = await ForgetPassword({
+
+  const one = await ForgetPassword.findOne({
     _id:id
   })
   if (!one) {
@@ -88,6 +89,17 @@ router.post('/update/status', async (ctx) => {
   }
 
   one.status = status
+
+  if (status === 2) {
+    const user = await User.findOne({
+      account:one.account
+    }).exec()
+
+    if (user) {
+      user.password = config.DEFAULT_PASSWORD
+      await user.save()
+    }
+  }
 
   await one.save()
 

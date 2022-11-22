@@ -1,37 +1,33 @@
-import axios from 'axios';
-import { getToken } from '@/helpers/token';
-
-axios.defaults.headers['Authorization'] = `Bearer ${getToken()}`;
-
-// axios.defaults.baseURL = '';
-export const add = (form) => axios.post('http://localhost:3001/book/add', form);
+import { del, post, get } from '@/helpers/request';
+// defaults.baseURL = '';
+export const add = (form) => post('/book/add', form);
 
 export const list = (data) => {
-  return axios.get('http://localhost:3001/book/list', {
-    params: data,
-  });
+  return get('/book/list',
+     data
+  );
 };
 
 export const remove = (id) => {
-  return axios.delete(`http://localhost:3001/book/${id}`);
+  return del(`/book/${id}`);
 };
 // export const login = (account, password) =>
-//   axios.post('http://localhost:3001/auth/login', { account, password });
+//   post('/auth/login', { account, password });
 
 export const updateCount = (data = {}) => {
-  return axios.post(`http://localhost:3001/book/update/count`, data);
+  return post(`/book/update/count`, data);
 };
 
 export const update = (data = {}) => {
-  return axios.post(`http://localhost:3001/book/update`, data);
+  return post(`/book/update`, data);
 };
 
 export const detail = (id) => {
-  return axios.get(`http://localhost:3001/book/detail/${id}`);
+  return get(`/book/detail/${id}`);
 };
 
 export const addMany = (key) => {
-  return axios.post(`http://localhost:3001/book/addmany`, {
+  return post(`/book/addmany`, {
     key,
   });
 };

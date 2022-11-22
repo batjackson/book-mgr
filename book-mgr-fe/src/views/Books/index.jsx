@@ -6,6 +6,7 @@ import { book, BookClassify } from '@/service';
 import { message, Modal } from 'ant-design-vue';
 import { result, formatTimeStamp } from '@/helpers/utils';
 import { getClassifyById } from '@/helpers/book-classify';
+import { getHeaders } from '@/helpers/request';
 import { useRouter } from 'vue-router';
 import { Item } from 'ant-design-vue/lib/menu';
 export default defineComponent({
@@ -206,7 +207,9 @@ export default defineComponent({
       getList,
       getClassifyById,
       simple: props.simple,
-      onUploadChange
+      onUploadChange,
+      headers: getHeaders(),
+
       // setShow,
     };
   },

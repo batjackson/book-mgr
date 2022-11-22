@@ -17,7 +17,7 @@
           <div>
             <a-button v-only-admin @click="show = true">添加一条</a-button>
             <span>&nbsp;</span>
-            <a-upload action="http://localhost:3001/upload/file" @change="onUploadChange">
+            <a-upload action="http://localhost:3001/upload/file" @change="onUploadChange" :headers="headers">
               <a-button type="primary">上传 Excel 添加</a-button>
             </a-upload>
           </div>

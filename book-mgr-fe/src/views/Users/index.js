@@ -3,6 +3,7 @@ import { result, formatTimeStamp } from '@/helpers/utils';
 import { user } from '@/service';
 import { message } from 'ant-design-vue';
 import AddOne from './AddOne/index.vue';
+import { getHeaders } from '@/helpers/request';
 import { getCharacterInfoById } from '@/helpers/character';
 import store from '@/store';
 import { EditOutlined } from '@ant-design/icons-vue';
@@ -134,6 +135,7 @@ export default defineComponent({
       onEdit,
       updateCharacter,
       onUploadChange,
+      headers: getHeaders(),
     };
   },
 });

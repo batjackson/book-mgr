@@ -15,9 +15,9 @@
           <MailOutlined />
         </template>
         <template #title>{{ item.title }}</template>
-              <a-menu-item v-for="(child) in item.children" :key="child.url" @click="to(child.url)" >
-        {{child.title}}
-      </a-menu-item>
+        <a-menu-item v-for="child in item.children" :key="child.url" @click="to(child.url)">
+          {{ child.title }}
+        </a-menu-item>
       </a-sub-menu>
       <a-menu-item @click="to(item.url)" :key="item.url" v-else>
         {{ item.title }}
@@ -44,10 +44,10 @@ export default defineComponent({
       menu.forEach((item) => {
         (item.children || []).forEach((child) => {
           if (child.url === route.path) {
-            openKeys.value.push(item.title)
+            openKeys.value.push(item.title);
           }
-        })
-      })
+        });
+      });
     });
 
     const to = (url) => {

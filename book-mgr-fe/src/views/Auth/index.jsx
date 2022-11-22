@@ -83,12 +83,13 @@ export default defineComponent({
       // }
       const res = await auth.login(loginForm.account, loginForm.password);
 
-      result(res).success(({ msg, data: { user, token } }) => {
+      result(res).success(async({ msg, data: { user, token } }) => {
         message.success(msg);
+        setToken(token);
+        await store.dispatch('getCharacterInfo');
         store.commit('setUserInfo', user);
         store.commit('setUserCharacter', getCharacterInfoById(user.character));
         // 存储token到浏览器
-        setToken(token);
         // 跳转页面
         router.replace('/books');
       });

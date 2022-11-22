@@ -6,6 +6,7 @@ require('./Schemas/Character')
 require('./Schemas/Log')
 require('./Schemas/LogResponse')
 require('./Schemas/ForgetPassword')
+require('./Schemas/BookClassify')
 const mongoose = require('mongoose')
 
 //1. 给哪个数据库的

@@ -1,6 +1,5 @@
-import axios from 'axios';
-
+import {  get } from '@/helpers/request';
 // axios.defaults.baseURL = '';
 export const list = () => {
-  return axios.get('http://localhost:3001/character/list');
+  return get('/character/list');
 };

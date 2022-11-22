@@ -1,8 +1,7 @@
-import axios from 'axios';
-
+import {post} from '@/helpers/request'
 // axios.defaults.baseURL = '';
 export const register = (account, password, inviteCode) =>
-  axios.post('http://localhost:3001/auth/register', { account, password, inviteCode });
+  post('/auth/register', { account, password, inviteCode });
 
 export const login = (account, password) =>
-  axios.post('http://localhost:3001/auth/login', { account, password });
+  post('/auth/login', { account, password });
